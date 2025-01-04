@@ -1,68 +1,134 @@
-// Dom
-const searchForm = document.getElementById('search-form');
-const searchInput = document.getElementById('search-input');
-const pName = document.getElementById('pokemon-name');
-const pId = document.getElementById('pokemon-id');
-const sprite = document.getElementById('sprite-container');
-const types = document.getElementById('types');
-const height = document.getElementById('height');
-const weight = document.getElementById('weight');
-const hp = document.getElementById('hp');
-const attack = document.getElementById('attack');
-const defense = document.getElementById('defense');
-const specialAttack = document.getElementById('special-attack');
-const specialDefense = document.getElementById('special-defense');
-const speed = document.getElementById('speed');
 
-// Fetch
-const getPokemon = async () => {
-  try {
-    const nameOrId = searchInput.value.toLowerCase();
-    const res = await fetch(
-      `https://pokeapi-proxy.freecodecamp.rocks/api/pokemon/${nameOrId}`
-    );
-    const data = await res.json();
+// Link base de cada pkm de la API
+let URL = "https://pokeapi.co/api/v2/pokemon/"; 
 
-    // Hydrate infos
+// Como hay 150, lo recorreremos 150 veces al link, con cada id incrementado
+
+for (let i=1; i<=151; i++) {
+
+    // Concatenamos la iteracion a la URL para recorrer las 150 URLS (1 por cada pkm)
     
-    pName.textContent = data.name?.toUpperCase() || 'N/A';
-    pId.textContent = `#${data.id || 'N/A'}`;
-    weight.textContent = `Weight: ${data.weight}`;
-    height.textContent = `Height: ${data.height}`;
-    sprite.innerHTML = `
-      <img id="sprite" src="${data.sprites.front_default || ''}" alt="${data.name} front sprite">
-    `;
+    // Fetchea la info en la URL que le pasamos / id=1, id=2, etc..
+    fetch(URL + i)
 
-    // Hydrate stats
-    const [hpStat, atk, def, spAtk, spDef, spd] = data.stats;
-    hp.textContent = hpStat.base_stat;
-    attack.textContent = atk.base_stat;
-    defense.textContent = def.base_stat;
-    specialAttack.textContent = spAtk.base_stat;
-    specialDefense.textContent = spDef.base_stat;
-    speed.textContent = spd.base_stat;
+        // El primer then toma la promesa (caso exitoso, es un string) y la convertimos a json con el metodo .json()
+        .then((response) => response.json())
 
-  // Hydrate types
-    types.innerHTML = data.types
-      .map(({ type }) => `<span class="type">${type.name}</span>`)
-      .join('');
-  } catch (err) {
-    remove();
-    alert('Pokémon not found');
-  }
-};
+        // El segundo then nos permite mostrar la info ya jasoneada
+        .then(data => mostrarPokemon(data))
 
-// CLEAN
-const remove = () => {
-  document.getElementById('sprite')?.remove();
-  
-  // Reset stats
-  [pName, pId, height, weight, hp, attack, defense, specialAttack, specialDefense, speed].forEach(el => el.textContent = '');
-  types.innerHTML = '';
-};
+}
 
-searchForm.addEventListener('submit', e => {
-  e.preventDefault();
-  getPokemon();
-  searchForm.reset();  // Clears the input field after submission
-});
+/* 
+En este punto, data es un conjunto de 150 objetos con la data de cada pkm
+console.log(data);
+De todas formas no vamos a usar todas las propiedades de los objetos, si no que
+seleccionaremos la data que nos interesa mostrar.
+*/
+
+const listaPokemon = document.querySelector("#listaPokemon");   // div que contiene todas las cards de pkm
+
+
+
+function mostrarPokemon(poke) {         // Toma como parametro la data de cada pkm en cada iteración
+
+    const div = document.createElement("div");
+    div.classList.add("pokemon");
+
+
+    // Con este bloque podemos convertir el nro back en un 001, 024, etc. asi queda prolijo
+    let pokeId = poke.id.toString();
+
+    if (pokeId.length === 1) {
+
+        pokeId = "00" + pokeId;             // #007
+
+    } else if (pokeId.length === 2) {       
+
+        pokeId = "0" + pokeId;              // #023
+    }
+
+
+
+    /* 
+    Puede ocurrir que al acceder a ciertos datos se complique pues sean array, objetos con arrays, arrays de obj, etc.
+    Por eso se recomienda tratarlos de antes en una variable, y luego usar el template con la variable directamente.
+    */
+    let tipos = poke.types.map(type =>`<p class="${type.type.name} tipo">${type.type.name}</p>`); 
+    tipos = tipos.join('');
+
+
+    /* 
+    Ahora, mediante template literals, y mediante el placeholder ${ obj.atr } reemplazamos cada valor del JSON en nuestro div
+    
+    En algunos casos, como la imagen, debemos entrar a las propiedades del obj a traves de las prop padres y llegar justo a la que queremos:
+    <img src="${poke.sprites.other["official-artwork"].front_default}" alt="pikachu">
+    */
+
+    div.innerHTML = 
+    `
+        <p class="pokemon-id-back">#${pokeId}</p>
+
+        <div class="pokemon-imagen">
+        <img src="${poke.sprites.other["official-artwork"].front_default}" alt="pikachu">
+        </div>
+
+        <div class="pokemon-info">
+            <div class="nombre-contenedor">
+                <p class="pokemon-id">#${pokeId}</p>
+                <h2 class="pokemon-nombre">${poke.name}</h2>
+            </div>
+        </div>
+
+        <div class="pokemon-tipos">
+            ${tipos}
+        </div>
+
+        <div class="pokemon-stats">
+            <p class="stat">${poke.height}kg</p>
+            <p class="stat">${poke.weight}cm</p>
+        </div>
+    `
+    listaPokemon.append(div);   // Una vez rellenada la card (div), se appendea en su seccion  
+}
+
+
+
+
+const botonesHeader = document.querySelectorAll(".btn-header");
+
+botonesHeader.forEach(boton => boton.addEventListener("click", (event) => { 
+
+    const botonId = event.currentTarget.id;     // el id del boton clickeado en el html
+
+    listaPokemon.innerHTML = "";
+
+    for (let i=1; i<=151; i++) {
+
+        fetch(URL + i)
+
+            .then((response) => response.json())
+    
+            .then(data => {
+
+                // Si el boton apretado es "ver todos", llama a la funcion normal
+                if (botonId === "ver-todos") {
+
+                    mostrarPokemon(data);
+
+                // Si el boton apretado es "tipo", por cada objeto que incluya ese tipo, se llama a la funcion (de los 150pkm..)
+                } else {
+
+                    const tipos = data.types.map(type => type.type.name);
+
+                    if (tipos.some(tipo => tipo.includes(botonId))) {
+
+                    mostrarPokemon(data);
+                }
+
+                }
+
+            })
+    }
+
+} ) )
