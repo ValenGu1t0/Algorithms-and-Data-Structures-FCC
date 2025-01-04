@@ -1,69 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokedex</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
-  <main class="container">
-    <h1 class="title">Pokedex</h1>
-    <form class="search-form" id="search-form">
-      <!-- Label for the search input -->
-      <label for="search-input" class="search-label"></label>
+    
+    <header>
+        <nav class="nav">
+            <img src="logo.png" alt="Logo Pokédex">
+            <ul class="nav-list">
+                <li class="nav-item"><button class="btn btn-header" id="ver-todos">Ver todos</button></li> 
+                <li class="nav-item"><button class="btn btn-header normal" id="normal">Normal</button></li>
+                <li class="nav-item"><button class="btn btn-header fire" id="fire">Fire</button></li>
+                <li class="nav-item"><button class="btn btn-header water" id="water">Water</button></li>
+                <li class="nav-item"><button class="btn btn-header grass" id="grass">Grass</button></li>
+                <li class="nav-item"><button class="btn btn-header electric" id="electric">Electric</button></li>
+                <li class="nav-item"><button class="btn btn-header ice" id="ice">Ice</button></li>
+                <li class="nav-item"><button class="btn btn-header fighting" id="fighting">Fighting</button></li>
+                <li class="nav-item"><button class="btn btn-header poison" id="poison">Poison</button></li>
+                <li class="nav-item"><button class="btn btn-header ground" id="ground">Ground</button></li>
+                <li class="nav-item"><button class="btn btn-header flying" id="flying">Flying</button></li>
+                <li class="nav-item"><button class="btn btn-header psychic" id="psychic">Psychic</button></li>
+                <li class="nav-item"><button class="btn btn-header bug" id="bug">Bug</button></li>
+                <li class="nav-item"><button class="btn btn-header rock" id="rock">Rock</button></li>
+                <li class="nav-item"><button class="btn btn-header ghost" id="ghost">Ghost</button></li>
+                <li class="nav-item"><button class="btn btn-header dark" id="dark">Dark</button></li>
+                <li class="nav-item"><button class="btn btn-header dragon" id="dragon">Dragon</button></li>
+                <li class="nav-item"><button class="btn btn-header steel" id="steel">Steel</button></li>
+                <li class="nav-item"><button class="btn btn-header fairy" id="fairy">Fairy</button></li>
+            </ul>
+        </nav>
+    </header>
 
-      <!-- Search input field -->
-      <input type="text" id="search-input" name="pokemon" required class="search-input" placeholder="Search Pokémon...">
+    <main>
 
-      <!-- Submit button -->
-      <button id="search-button" class="search-button">Search</button>
-    </form>
+        <div id="todos">    <!-- MAIN -->
+    
+            <div class="pokemon-todos" id="listaPokemon"> 
+                <!-- Cuadro de Pokemons \ Aca van los div de los pkm -->
 
-    <section class="pokemon-info">
-      <h2 class="pokemon-name" id="pokemon-name"></h2>
-      <div id="sprite-container" class="sprite-container"></div>
-      <p class="pokemon-id" id="pokemon-id"></p>
-      <p class="pokemon-weight" id="weight"></p>
-      <p class="pokemon-height" id="height"></p>
-      <p class="pokemon-types" id="types"></p>
-      <div id="types" class="pokemon-type"></div>
-    </section>
+                <!-- <div class="pokemon">
 
-    <section class="pokemon-stats">
-      <h3>Stats</h3>
-      <table class="stats-table">
-        <tr>
-          <td>HP</td>
-          <td id="hp"></td>
-        </tr>
-        <tr>
-          <td>Attack</td>
-          <td id="attack"></td>
-        </tr>
-        <tr>
-          <td>Defense</td>
-          <td id="defense"></td>
-        </tr>
-        <tr>
-          <td>Sp. Attack</td>
-          <td id="special-attack"></td>
-        </tr>
-        <tr>
-          <td>Sp. Defense</td>
-          <td id="special-defense"></td>
-        </tr>
-        <tr>
-          <td>Speed</td>
-          <td id="speed"></td>
-        </tr>
-      </table>
-    </section>
+                    <p class="pokemon-id-back">#025</p>
 
-  </main>
-  <script src="./script.js"></script>
+                    <div class="pokemon-imagen">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="pikachu">
+                    </div>
+
+                    <div class="pokemon-info">
+                        <div class="nombre-contenedor">
+                            <p class="pokemon-id">#025</p>
+                            <h2 class="pokemon-nombre">Pikachu</h2>
+                        </div>
+                    </div>
+
+                    <div class="pokemon-tipos">
+                        <p class="tipo electric">Electric</p>
+                        <p class="tipo normal">Normal</p>
+                    </div>
+
+                    <div class="pokemon-stats">
+                        <p class="stat">1m</p>
+                        <p class="stat">60kg</p>
+                    </div>
+
+                </div> -->
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="main.js"></script>
 </body>
-
 </html>
